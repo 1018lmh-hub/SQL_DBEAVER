@@ -107,6 +107,8 @@ SELECT * FROM VW_ZONE_STATS;
 -- < 뷰 삭제 >
 
 --DROP VIEW 뷰이름;
+
+
  
 
 
