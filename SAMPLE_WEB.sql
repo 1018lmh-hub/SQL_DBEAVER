@@ -1,0 +1,143 @@
+
+-- 여기에 들어갈 값이 어떤 값인가 생각
+
+-- 회원번호 -- 1, 2, 3 ...
+
+-- 사용자에게 입력받는 값
+-- 아이디 -- USER01, USER02, USER03 ...
+-- 비밀번호 -- PASS01, PASS01, PASS01 ...
+-- 이름 -- 홍길동, 고길동, 둘리
+-- 이메일 -- KH@kh.com, kh@naver.com, kh@daum.com
+-- 사용자에게 입력받는 값
+ 
+-- 가입일 -- SYSDATE
+-- 회원정보수정일 -- SYSDATE
+-- 삭제여부 -- 'Y' / 'N'
+
+CREATE TABLE SAM_MEMBER(
+	USER_NO NUMBER PRIMARY KEY,
+	USER_ID VARCHAR2(30) UNIQUE NOT NULL,
+	USER_PWD VARCHAR2(30) NOT NULL,
+	USER_NAME NVARCHAR2(20) NOT NULL,
+	EMAIL VARCHAR2(30) NOT NULL,
+	ENROLL_DATE DATE DEFAULT SYSDATE,
+	MODIFY_DATE DATE DEFAULT SYSDATE,
+	STATUS CHAR(1) DEFAULT 'N' CHECK(STATUS IN('Y', 'N'))
+);
+
+
+CREATE SEQUENCE SEQ_SAM_NO NOCACHE;
+
+SELECT * FROM SAM_MEMBER;
+
+INSERT INTO SAM_MEMBER
+VALUES (SEQ_SAM_NO.NEXTVAL,
+		'admin',
+		'1234',
+		'관리자',
+		'admin@sample.com',
+		SYSDATE,
+		SYSDATE,
+		'N');
+----------------------------------------------------------------
+
+CREATE TABLE SAM_BOARD(
+	BOARD_NO NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+	USER_NO NUMBER REFERENCES SAM_MEMBER,
+	BOARD_TITLE NVARCHAR2(50) NOT NULL,
+	BOARD_CONTENT NVARCHAR2(2000) NOT NULL,
+	CREATE_DATE DATE DEFAULT SYSDATE,
+	MODIFY_DATE DATE DEFAULT SYSDATE,
+	COUNT NUMBER DEFAULT 0,
+	STATUS CHAR(1) DEFAULT 'N' CHECK(STATUS IN ('Y', 'N'))	
+);
+
+SELECT * FROM SAM_BOARD;
+
+
+SELECT 
+       BOARD_NO
+     , BOARD_TITLE
+  FROM
+       SAM_BOARD
+ ORDER 
+    BY  
+       CREATE_DATE DESC
+OFFSET 
+       3 ROWS FETCH NEXT 3 ROWS ONLY;
+
+
+INSERT 
+  INTO
+       SAM_BOARD
+       (
+       USER_NO, 
+       BOARD_TITLE, 
+       BOARD_CONTENT
+       )
+VALUES
+  	   (1, '첫 글입니다.', '안녕하세요~');
+
+
+--------------------------------------------------
+
+CREATE TABLE SAM_ATTACHMENT(
+	FILE_NO NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+	REF_BNO NUMBER NOT NULL,
+	ORIGIN_NAME VARCHAR2(100) NOT NULL,
+	CHANGE_NAME VARCHAR2(50) NOT NULL,
+	FILE_PATH VARCHAR2(100) NOT NULL,
+	BOARD_TYPE CHAR(1) NOT NULL,
+	FILE_LEVEL NUMBER NOT NULL,
+	CREATE_DATE DATE DEFAULT SYSDATE,
+	STATUS CHAR(1) DEFAULT 'N' CHECK(STATUS IN ('Y', 'N'))
+);
+
+SELECT * FROM SAM_ATTACHMENT;
+
+
+SELECT MAX(BOARD_NO) FROM SAM_BOARD;
+
+
+SELECT  
+       BOARD_NO
+  FROM 
+       (SELECT 
+       		   BOARD_NO
+          FROM  
+               WEB_BOARD
+         ORDER
+            BY
+               BOARD_NO DESC)
+WHERE 
+      ROWNUM = 1;
+              
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
