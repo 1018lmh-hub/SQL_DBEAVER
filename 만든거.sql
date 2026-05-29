@@ -79,6 +79,57 @@ SELECT * FROM GAL_FILE;
  		       GALLERY_NO DESC;
 
 
+SELECT * FROM REPLY;
+SELECT * FROM MEMBER;
+SELECT * FROM NOTICE;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- 식당 후기 테이블(작성, 조회 기능 구현할 용도)
+
+--어떤 식당의 후기인지
+--후기 내용
+--작성 날짜
+--별점
+
+CREATE TABLE REVIEW(
+	UC_SEQ NUMBER NOT NULL,
+	CONTENT NVARCHAR2(1000) NOT NULL,
+	CREATE_DATE DATE DEFAULT SYSDATE,
+	RATING NUMBER CHECK (RATING BETWEEN 1 AND 5)
+);
+
+SELECT * FROM REVIEW;
+
+DROP TABLE REVIEW;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
